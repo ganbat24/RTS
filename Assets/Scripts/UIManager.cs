@@ -20,9 +20,7 @@ public class UIManager : MonoBehaviour
         Player.instance.OnGainedPlanet += (planet) => resourceUI[planet].SetActive(true);
         Player.instance.OnLostPlanet += (planet) => resourceUI[planet].SetActive(false);
 
-        Planet.planets.ForEach((planet) => {
-            instance.CreateResourceUI(planet);
-        });
+        Planet.OnPlanetSpawned += (planet) => instance.CreateResourceUI(planet);
     }
 
     Dictionary<Planet, GameObject> resourceUI = new Dictionary<Planet, GameObject>();

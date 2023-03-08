@@ -6,19 +6,26 @@ using UnityEngine;
 public class Ship : MonoBehaviour
 {
     [HideInInspector] public Commander commander;
-    [HideInInspector] public Planet planet;
+    [HideInInspector] public Planet planet = default;
+
     Rigidbody2D rb;
+
     [SerializeField] int power = 1;
     [SerializeField] int speed = 1;
-    Planet destination = default;
 
-    float curHealth = 0f;
+    [SerializeField] Planet destination = default;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
     }
 
+    private void Start() {
+        planet = transform.parent.GetComponent<Planet>();
+        commander = transform.parent.parent.GetComponent<Commander>();
+    }
+
     private void FixedUpdate() {
+        if(destination == null) return;
         Vector2 direction = ((Vector2)destination.transform.position - rb.position).normalized;
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
 

@@ -6,16 +6,9 @@ public class Player : Commander
 {
     public static Player instance;
 
-    [SerializeField] List<Planet> desiredPlanets = default;
-
     private void Awake() {
-        if(instance == null){
-            instance = this;
-        }else{
-            Destroy(gameObject);
-        }
+        instance = this;
         OnPlanetPressed += SomePlanetPressed;
-        desiredPlanets.ForEach(planet => planet.ChangeCommander(this));
     }
 
     private void Update() {
