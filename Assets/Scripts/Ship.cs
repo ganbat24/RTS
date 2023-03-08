@@ -11,7 +11,7 @@ public class Ship : MonoBehaviour
     Rigidbody2D rb;
 
     [SerializeField] int power = 1;
-    [SerializeField] int speed = 1;
+    [SerializeField] float speed = 1;
 
     [SerializeField] Planet destination = default;
 
@@ -48,7 +48,7 @@ public class Ship : MonoBehaviour
         Planet otherPlanet = other.gameObject.GetComponent<Planet>();
         if(otherPlanet != null && otherPlanet.Equals(destination)){
             //collided with planets
-            if(otherPlanet.commander == commander){
+            if(otherPlanet.commander.Equals(commander)){
                 otherPlanet.resourceManager.GatherResources(power);
             }else{
                 if(otherPlanet.resourceManager.TryConquer(power)){

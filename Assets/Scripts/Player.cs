@@ -27,6 +27,7 @@ public class Player : Commander
         }else{
             if(initialPlanet != planet){
                 initialPlanet.SendFleet(planet);
+                RaiseCommanderAttack(planet.commander);
             }
             initialPlanet = null;
         }

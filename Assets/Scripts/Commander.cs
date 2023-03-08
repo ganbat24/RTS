@@ -9,11 +9,16 @@ public class Commander : MonoBehaviour
     public List<Planet> ownedPlanets = default;
     public Color color = default;
     public static event System.Action<Planet> OnPlanetPressed;
+    public event System.Action<Commander> OnCommanderAttack;
     public event System.Action<Planet> OnGainedPlanet;
     public event System.Action<Planet> OnLostPlanet;
 
     private void Start() {
         save = transform.parent.GetComponent<Save>();
+    }
+
+    protected void RaiseCommanderAttack(Commander commander){
+        OnCommanderAttack?.Invoke(commander);
     }
 
     public virtual Commander Copy(Save _save){
