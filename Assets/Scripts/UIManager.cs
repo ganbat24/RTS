@@ -14,16 +14,23 @@ public class UIManager : MonoBehaviour
         }else{
             Destroy(this);
         }
+        Planet.OnPlanetSpawned += instance.CreateResourceUI;
+        Planet.OnPlanetDestroyed += instance.DestroyResourceUI;
+        Planet.OnPlanetSpawned += ResourceUIVisibility;
+        
     }
 
-    private void Start() {
-        Player.instance.OnGainedPlanet += (planet) => resourceUI[planet].SetActive(true);
-        Player.instance.OnLostPlanet += (planet) => resourceUI[planet].SetActive(false);
-
-        Planet.OnPlanetSpawned += (planet) => instance.CreateResourceUI(planet);
+    void ResourceUIVisibility(Planet planet){
+        resourceUI[planet].SetActive(planet.isActiveAndEnabled && planet.commander.Equals(Player.instance));
     }
 
     Dictionary<Planet, GameObject> resourceUI = new Dictionary<Planet, GameObject>();
+    void DestroyResourceUI(Planet planet){
+        if(resourceUI.ContainsKey(planet)){
+            Destroy(resourceUI[planet].gameObject);
+            resourceUI.Remove(planet);
+        }
+    }
 
     void CreateResourceUI(Planet planet){
         GameObject tmp = Instantiate(defaultResourceUI, planet.transform.position, Quaternion.identity);

@@ -60,6 +60,7 @@ public class SaveManager : MonoBehaviour
     }
 
     public void Load(Save save){
+        Debug.Log("Loaded from " + save.name);
         saves.Remove(currentSave);
         Destroy(currentSave.gameObject);
         currentSave = save;

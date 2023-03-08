@@ -9,6 +9,7 @@ public class Planet : MonoBehaviour {
 
     [SerializeField] SpriteRenderer sprite = default;
     public static event System.Action<Planet> OnPlanetSpawned;
+    public static event System.Action<Planet> OnPlanetDestroyed;
 
     List<Ship> fleets = new List<Ship>();
 
@@ -22,6 +23,11 @@ public class Planet : MonoBehaviour {
     private void Start() {
         commander = transform.parent.GetComponent<Commander>();
         sprite.color = commander.color;
+        OnPlanetSpawned?.Invoke(this);
+    }
+
+    private void OnDestroy() {
+        OnPlanetDestroyed?.Invoke(this);
     }
 
     public void ChangeCommander(Commander _commander){
