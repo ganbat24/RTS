@@ -595,6 +595,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &778632260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 778632262}
+  - component: {fileID: 778632261}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &778632261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778632260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90c73a6b7ab4bda49adceb5ef037c194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &778632262
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778632260}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &814126329
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,8 +786,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commanders:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 6655357542692771891}
+  - {fileID: 4876208513965620063}
+  planets:
+  - {fileID: 476141223633313315}
+  - {fileID: 476141224752643173}
+  - {fileID: 476141224462211453}
+  - {fileID: 476141224108059060}
+  - {fileID: 476141225029144303}
+  - {fileID: 476141224362253123}
 --- !u!1 &1239771709
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,8 +884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipStruct: {fileID: 4824295225119107487, guid: ae4be9e386128bf4d9e8cb3f81072d67, type: 3}
-  saves:
-  - {fileID: 1021900997}
+  saves: []
   currentSave: {fileID: 1021900997}
 --- !u!4 &1682906145
 Transform:
@@ -1890,23 +1940,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   save: {fileID: 0}
-  ownedPlanets: []
+  ownedPlanets:
+  - {fileID: 476141224108059060}
+  - {fileID: 476141225029144303}
+  - {fileID: 476141224362253123}
   color: {r: 0.33333334, g: 0.34901962, b: 1, a: 0.33333334}
---- !u!114 &6529758357401587798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6655357542692771888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62dd6a92af686034bbff310c32ab25ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  save: {fileID: 0}
-  ownedPlanets: []
-  color: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 0.2}
 --- !u!1 &6655357542692771888
 GameObject:
   m_ObjectHideFlags: 0
@@ -1916,9 +1954,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6655357542692771890}
-  - component: {fileID: 6529758357401587798}
+  - component: {fileID: 6655357542692771891}
   m_Layer: 0
-  m_Name: Idle
+  m_Name: Dumb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1942,3 +1980,23 @@ Transform:
   m_Father: {fileID: 1021900996}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6655357542692771891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6655357542692771888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 823ed11d2a710b148b465a46d0ba95cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  save: {fileID: 0}
+  ownedPlanets:
+  - {fileID: 476141223633313315}
+  - {fileID: 476141224752643173}
+  - {fileID: 476141224462211453}
+  color: {r: 1, g: 0, b: 0, a: 0.2901961}
+  attackSpeed: 2
+  nextAttackTime: 0

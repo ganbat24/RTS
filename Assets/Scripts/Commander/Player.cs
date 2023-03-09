@@ -12,23 +12,24 @@ public class Player : Commander
     }
 
     private void Update() {
-        if(Input.GetMouseButtonDown(0)){
-            // Debug.Log(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)));
-        }
+        
     }
 
     Planet initialPlanet = null;
     void SomePlanetPressed(Planet planet)
     {
         if(initialPlanet == null){
-            if(planet.commander == this){
+            if(planet.commander.Equals(this)){
                 initialPlanet = planet;
+                planet.Selected = true;
             }
         }else{
             if(initialPlanet != planet){
+                planet.Selected = false;
                 initialPlanet.SendFleet(planet);
                 RaiseCommanderAttack(planet.commander);
             }
+            initialPlanet.Selected = false;
             initialPlanet = null;
         }
     }

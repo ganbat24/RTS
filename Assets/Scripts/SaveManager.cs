@@ -19,6 +19,10 @@ public class SaveManager : MonoBehaviour
         }
     }
 
+    private void Start() {
+        saves.Add(Save(currentSave, "Start"));
+    }
+
     int index = 0;
     private void Update() {
         if(Input.GetKeyDown(KeyCode.DownArrow)){
@@ -30,7 +34,7 @@ public class SaveManager : MonoBehaviour
             if(index < 0) index += saves.Count;
             Load(index);
         }else if(Input.GetMouseButtonDown(1)){
-            Save("" + saves.Count);
+            saves.Add(Save(currentSave, "" + saves.Count));
         }
     }
 
@@ -43,15 +47,16 @@ public class SaveManager : MonoBehaviour
         return newShip;
     }
 
-    public static Save Save(string _name){
-        return instance.HiddenSave(_name);
+    public static Save Save(Save save, string _name){
+        return instance.HiddenSave(save, _name);
     }
 
-    Save HiddenSave(string _name){
-        Save tmp = Instantiate(currentSave, transform);
-        tmp.name = "Save : " + _name;
-        saves.Add(tmp);
+    Save HiddenSave(Save save, string _name){
+        currentSave.gameObject.SetActive(false);
+        Save tmp = Instantiate(save, transform);
+        tmp.name = "[Save] : " + _name;
         tmp.gameObject.SetActive(false);
+        currentSave.gameObject.SetActive(true);
         return tmp;
     }
 
@@ -60,11 +65,8 @@ public class SaveManager : MonoBehaviour
     }
 
     public void Load(Save save){
-        Debug.Log("Loaded from " + save.name);
-        saves.Remove(currentSave);
         Destroy(currentSave.gameObject);
-        currentSave = save;
-        currentSave = Save("Current"); 
+        currentSave = Save(save, "[Loaded] : " + save.name); 
         save.gameObject.SetActive(false);
         currentSave.gameObject.SetActive(true);
     }

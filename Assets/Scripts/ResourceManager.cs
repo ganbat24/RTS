@@ -12,6 +12,9 @@ public class ResourceManager : MonoBehaviour {
 
     float nextGrowthTime = 0f;
     private void Update() {
+        if(GameManager.gamePaused){
+            nextGrowthTime += Time.deltaTime;
+        }
         if(Time.time > nextGrowthTime && resources < maxResources){
             resources ++;
             OnResourceChange?.Invoke();
@@ -36,11 +39,12 @@ public class ResourceManager : MonoBehaviour {
 
     public bool TryConquer(int amount){
         resources -= amount;
-        OnResourceChange?.Invoke();
         if(resources < 0){
             resources *= -1;
+            OnResourceChange?.Invoke();
             return true;
         }else{
+            OnResourceChange?.Invoke();
             return false;
         }
     }

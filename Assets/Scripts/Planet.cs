@@ -24,15 +24,21 @@ public class Planet : MonoBehaviour {
         commander = transform.parent.GetComponent<Commander>();
         sprite.color = commander.color;
         OnPlanetSpawned?.Invoke(this);
+        GameManager.onGamePause += OnMouseExit;
     }
 
     private void OnDestroy() {
         OnPlanetDestroyed?.Invoke(this);
     }
 
+    private void Update() {
+        
+    }
+
     public void ChangeCommander(Commander _commander){
         commander?.LoosePlanet(this);
         commander = _commander;
+        transform.parent = commander.transform;
         commander.GainPlanet(this);
         sprite.color = commander.color;
     }
@@ -65,13 +71,24 @@ public class Planet : MonoBehaviour {
         return (Vector2)transform.position + randomPosition;
     }
 
+    bool selected = false;
+    public bool Selected {
+        get { return selected; }
+        set {
+            selected = value;
+            if(!selected) sprite.color = commander.color;
+            else sprite.color = Color.white;
+        }
+    }
     private void OnMouseDown() {
+        if(GameManager.gamePaused) return;
         Commander.PlanetPressed(this);
     }
     private void OnMouseEnter() {
+        if(GameManager.gamePaused) return;
         sprite.color = Color.white;
     }
     private void OnMouseExit() {
-        sprite.color = commander.color;
+        if(!Selected) sprite.color = commander.color;
     }
 }

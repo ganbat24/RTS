@@ -12,6 +12,7 @@ public class Ship : MonoBehaviour
 
     [SerializeField] int power = 1;
     [SerializeField] float speed = 1;
+    [SerializeField] SpriteRenderer sprite = default;
 
     [SerializeField] Planet destination = default;
 
@@ -22,9 +23,11 @@ public class Ship : MonoBehaviour
     private void Start() {
         planet = transform.parent.GetComponent<Planet>();
         commander = transform.parent.parent.GetComponent<Commander>();
+        sprite.color = new Color(commander.color.r, commander.color.g, commander.color.b, 255);
     }
 
     private void FixedUpdate() {
+        if(GameManager.gamePaused) return;
         if(destination == null) return;
         Vector2 direction = ((Vector2)destination.transform.position - rb.position).normalized;
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);

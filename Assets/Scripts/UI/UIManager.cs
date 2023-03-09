@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject defaultResourceUI = default;
     [SerializeField] TextMeshProUGUI dialogueText = default;
     [SerializeField] List<Dialogue> OnPlayerAttackDialogue = new List<Dialogue>();
+    [SerializeField] Dictionary<Planet, GameObject> resourceUI = new Dictionary<Planet, GameObject>();
     
     private void Awake() {
         if(instance == null){
@@ -24,11 +25,12 @@ public class UIManager : MonoBehaviour
         ((RectTransform)InGameUI.transform).sizeDelta = new Vector2(Screen.width, Screen.height);
 
         Player.instance.OnGainedPlanet += ResourceUIVisibility;
+        Player.instance.OnLostPlanet += ResourceUIVisibility;
         Player.instance.OnCommanderAttack += OnPlayerAttack;
     }
 
-    Coroutine currentDialogue = null;
-    bool dialogueFinished = true;
+    [SerializeField] Coroutine currentDialogue = null;
+    [SerializeField] bool dialogueFinished = true;
     void OnPlayerAttack(Commander commander){
         if(!dialogueFinished) return;
         if(Random.Range(0, 100) < 40){
@@ -43,7 +45,6 @@ public class UIManager : MonoBehaviour
         resourceUI[planet].SetActive(planet.isActiveAndEnabled && planet.commander.Equals(Player.instance));
     }
 
-    Dictionary<Planet, GameObject> resourceUI = new Dictionary<Planet, GameObject>();
     void DestroyResourceUI(Planet planet){
         if(resourceUI.ContainsKey(planet)){
             Destroy(resourceUI[planet].gameObject);

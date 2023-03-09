@@ -7,7 +7,7 @@ public class Commander : MonoBehaviour
     [HideInInspector] public Save save = default;
 
     public List<Planet> ownedPlanets = default;
-    public Color color = default;
+    public Color color = new Color(199, 155, 155, 155);
     public static event System.Action<Planet> OnPlanetPressed;
     public event System.Action<Commander> OnCommanderAttack;
     public event System.Action<Planet> OnGainedPlanet;
@@ -20,15 +20,6 @@ public class Commander : MonoBehaviour
     protected void RaiseCommanderAttack(Commander commander){
         OnCommanderAttack?.Invoke(commander);
     }
-
-    public virtual Commander Copy(Save _save){
-        Commander newCommander = Instantiate(this, Vector3.zero, Quaternion.identity);
-        newCommander.transform.parent = _save.transform;
-        newCommander.save = _save;
-        newCommander.name = name;
-        return newCommander;
-    }
-
 
     public void LoosePlanet(Planet planet){
         ownedPlanets.Remove(planet);
