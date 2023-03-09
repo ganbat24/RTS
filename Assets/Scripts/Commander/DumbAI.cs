@@ -11,11 +11,12 @@ public class DumbAI : Commander
     private void Update() {
         if(GameManager.gamePaused){
             nextAttackTime += Time.deltaTime;
+            return;
         }
         if(Time.time >= nextAttackTime){
             SortPlanets();
             ownedPlanets.ForEach((planet) => {
-                if(planet.resourceManager.resources > 10){
+                if(planet.resourceManager.resources >= 10){
                     for(int i = 0; i < save.planets.Count; i++){
                         if(!save.planets[i].commander.Equals(this)){
                             planet.SendFleet(save.planets[i]);

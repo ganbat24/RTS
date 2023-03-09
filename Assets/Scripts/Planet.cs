@@ -36,11 +36,12 @@ public class Planet : MonoBehaviour {
     }
 
     public void ChangeCommander(Commander _commander){
-        commander?.LoosePlanet(this);
+        Commander oldCommander = commander;
         commander = _commander;
         transform.parent = commander.transform;
-        commander.GainPlanet(this);
         sprite.color = commander.color;
+        oldCommander.LoosePlanet(this);
+        commander.GainPlanet(this);
     }
 
     public void SendFleet(Planet other, int amount){

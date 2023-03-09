@@ -10,10 +10,11 @@ public class ResourceManager : MonoBehaviour {
 
     public event System.Action OnResourceChange;
 
-    float nextGrowthTime = 0f;
+    [SerializeField] float nextGrowthTime = 0f;
     private void Update() {
         if(GameManager.gamePaused){
             nextGrowthTime += Time.deltaTime;
+            return;
         }
         if(Time.time > nextGrowthTime && resources < maxResources){
             resources ++;

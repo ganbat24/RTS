@@ -26,9 +26,17 @@ public class Ship : MonoBehaviour
         sprite.color = new Color(commander.color.r, commander.color.g, commander.color.b, 255);
     }
 
+    [SerializeField] float jumpDelay = 0.2f;
+    [SerializeField] float jumpSpeed = 2f; //2 units persecond
+    [SerializeField] float jumpDuration = 0.1f;
+    [SerializeField] float nextJumpTime = 0f;
     private void FixedUpdate() {
-        if(GameManager.gamePaused) return;
-        if(destination == null) return;
+        rb.velocity = Vector2.zero;
+        if(GameManager.gamePaused) {
+            nextJumpTime += Time.fixedDeltaTime;
+            return;
+        }
+
         Vector2 direction = ((Vector2)destination.transform.position - rb.position).normalized;
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
 
@@ -37,6 +45,30 @@ public class Ship : MonoBehaviour
 
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+
+        if(Time.time >= nextJumpTime){
+            if(destination == null) return;
+            // StartCoroutine(Jump());
+            nextJumpTime = Time.time + jumpDuration + jumpDelay + Random.Range(-.1f, .1f);
+        }
+    }
+
+    IEnumerator Jump(){
+        float percentage = 0f;
+        while(percentage < 1f){
+            if(GameManager.gamePaused) yield return new WaitForFixedUpdate();
+            Vector2 direction = ((Vector2)destination.transform.position - rb.position).normalized;
+            rb.MovePosition(rb.position + direction * jumpSpeed * Time.fixedDeltaTime);
+
+            Vector2 diff = (Vector2)destination.transform.position - rb.position;
+            diff.Normalize();
+
+            float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+
+            percentage += Time.fixedDeltaTime / jumpDuration;
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     public void SetDestination(Planet _destination) {

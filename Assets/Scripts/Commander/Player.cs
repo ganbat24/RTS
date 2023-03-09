@@ -11,6 +11,10 @@ public class Player : Commander
         OnPlanetPressed += SomePlanetPressed;
     }
 
+    private void OnEnable() {
+        instance = this;
+    }
+
     private void Update() {
         
     }

@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static bool gamePaused = true;
+    public static bool gamePaused = false;
     public static void UnPauseGame(){
         gamePaused = false;
         onGameUnPause?.Invoke();

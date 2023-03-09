@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Canvas InGameUI = default;
     [SerializeField] GameObject defaultResourceUI = default;
     [SerializeField] TextMeshProUGUI dialogueText = default;
+    [SerializeField] TextMeshProUGUI timerText = default;
     [SerializeField] List<Dialogue> OnPlayerAttackDialogue = new List<Dialogue>();
     [SerializeField] Dictionary<Planet, GameObject> resourceUI = new Dictionary<Planet, GameObject>();
     
@@ -23,10 +24,18 @@ public class UIManager : MonoBehaviour
         Planet.OnPlanetDestroyed += instance.DestroyResourceUI;
         Planet.OnPlanetSpawned += ResourceUIVisibility;
         ((RectTransform)InGameUI.transform).sizeDelta = new Vector2(Screen.width, Screen.height);
+        SaveManager.OnLoaded += () => {
+            Player.instance.OnGainedPlanet += ResourceUIVisibility;
+            Player.instance.OnLostPlanet += ResourceUIVisibility;
+            Player.instance.OnCommanderAttack += OnPlayerAttack;
+        };
+    }
 
-        Player.instance.OnGainedPlanet += ResourceUIVisibility;
-        Player.instance.OnLostPlanet += ResourceUIVisibility;
-        Player.instance.OnCommanderAttack += OnPlayerAttack;
+    [SerializeField] int timeInc = 15;
+    private void Update() {
+        float p = SaveManager.instance.timePercent;
+        p *= 24 * 3600;
+        timerText.text = "" + Mathf.Floor(p / 3600) + " : " + Mathf.Floor((p%3600)/(60 * timeInc))*timeInc;
     }
 
     [SerializeField] Coroutine currentDialogue = null;
