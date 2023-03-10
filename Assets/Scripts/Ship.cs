@@ -22,8 +22,8 @@ public class Ship : MonoBehaviour
 
     private void Start() {
         planet = transform.parent.GetComponent<Planet>();
-        commander = transform.parent.parent.GetComponent<Commander>();
-        sprite.color = new Color(commander.color.r, commander.color.g, commander.color.b, 255);
+        sprite.sprite = commander.spriteUnit;
+        commander.shipCount++;
     }
 
     [SerializeField] float jumpDelay = 0.2f;
@@ -36,7 +36,11 @@ public class Ship : MonoBehaviour
             nextJumpTime += Time.fixedDeltaTime;
             return;
         }
+        Normal();
+        // Jumpy();
+    }
 
+    void Normal(){
         Vector2 direction = ((Vector2)destination.transform.position - rb.position).normalized;
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
 
@@ -45,10 +49,12 @@ public class Ship : MonoBehaviour
 
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+    }
 
+    void Jumpy(){
         if(Time.time >= nextJumpTime){
             if(destination == null) return;
-            // StartCoroutine(Jump());
+            StartCoroutine(Jump());
             nextJumpTime = Time.time + jumpDuration + jumpDelay + Random.Range(-.1f, .1f);
         }
     }
@@ -76,6 +82,7 @@ public class Ship : MonoBehaviour
     }
 
     private void Die() {
+        commander.shipCount--;
         Destroy(gameObject);
     }
 

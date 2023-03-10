@@ -9,17 +9,26 @@ public class Player : Commander
     private void Awake() {
         instance = this;
         OnPlanetPressed += SomePlanetPressed;
+        GameManager.onGamePause += () => {
+            initialPlanet.Selected = false;
+            initialPlanet = null;
+        };
     }
 
     private void OnEnable() {
         instance = this;
     }
 
+    [SerializeField] float nextBonusTime = 0f;
     private void Update() {
-        
+        if(GameManager.gamePaused) return;
+        if(Resources() < 40 && Time.time > nextBonusTime){
+            ownedPlanets.ForEach(planet => planet.resourceManager.GatherResources(1));
+            nextBonusTime = Time.time + 1f / 7f;
+        }
     }
 
-    Planet initialPlanet = null;
+    public Planet initialPlanet = null;
     void SomePlanetPressed(Planet planet)
     {
         if(initialPlanet == null){
@@ -31,7 +40,6 @@ public class Player : Commander
             if(initialPlanet != planet){
                 planet.Selected = false;
                 initialPlanet.SendFleet(planet);
-                RaiseCommanderAttack(planet.commander);
             }
             initialPlanet.Selected = false;
             initialPlanet = null;

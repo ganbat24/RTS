@@ -7,7 +7,7 @@ public class Planet : MonoBehaviour {
     [HideInInspector] public Commander commander;
     [HideInInspector] public ResourceManager resourceManager;
 
-    [SerializeField] SpriteRenderer sprite = default;
+    public SpriteRenderer sprite = default;
     public static event System.Action<Planet> OnPlanetSpawned;
     public static event System.Action<Planet> OnPlanetDestroyed;
 
@@ -15,20 +15,33 @@ public class Planet : MonoBehaviour {
 
     float spawnRadius = 1f;
 
+    public OutlineDisk outline = default;
+
     private void Awake() {
         resourceManager = GetComponent<ResourceManager>();
+        outline = GetComponent<OutlineDisk>();
         spawnRadius = GetComponent<CircleCollider2D>().radius + 0.3f;
+        resourceManager.OnResourceChange += CheckSprite;
     }
 
     private void Start() {
         commander = transform.parent.GetComponent<Commander>();
-        sprite.color = commander.color;
         OnPlanetSpawned?.Invoke(this);
-        GameManager.onGamePause += OnMouseExit;
+        GameManager.onGamePause += () => Selected = false;
     }
 
     private void OnDestroy() {
         OnPlanetDestroyed?.Invoke(this);
+    }
+
+    void CheckSprite(){
+        if(resourceManager.resources < 1f/3 * resourceManager.maxResources){
+            sprite.sprite = commander.spriteSmall;
+        }else if(resourceManager.resources < 2f/3 * resourceManager.maxResources){
+            sprite.sprite = commander.spriteMed;
+        }else{
+            sprite.sprite = commander.spriteBig;
+        }
     }
 
     private void Update() {
@@ -39,14 +52,16 @@ public class Planet : MonoBehaviour {
         Commander oldCommander = commander;
         commander = _commander;
         transform.parent = commander.transform;
-        sprite.color = commander.color;
         oldCommander.LoosePlanet(this);
         commander.GainPlanet(this);
+        Player.instance.initialPlanet = null;
+        Selected = false;
     }
 
     public void SendFleet(Planet other, int amount){
+        if(amount <= 0) return;
         List<Ship> fleet = SendFleet(amount, other);
-        fleets.AddRange(fleet);
+        if(fleet != null) fleets.AddRange(fleet);
     }
     
     public void SendFleet(Planet other){
@@ -54,10 +69,14 @@ public class Planet : MonoBehaviour {
     }
 
     public List<Ship> SendFleet(int amount, Planet planet) {
+        if(amount <= 0) return null;
+        commander.RaiseCommanderAttack(commander);
+        if(!planet.commander.Equals(commander)) planet.commander.RaiseCommanderAttack(planet.commander);
         if(resourceManager.SpendResources(amount)){
             List<Ship> fleet = new List<Ship>();
             for(int i = 0; i < amount; i++) {
                 Ship tmp = SaveManager.SpawnShip(this);
+                tmp.commander = commander;
                 tmp.SetDestination(planet);
                 fleet.Add(tmp);
             }
@@ -77,19 +96,22 @@ public class Planet : MonoBehaviour {
         get { return selected; }
         set {
             selected = value;
-            if(!selected) sprite.color = commander.color;
-            else sprite.color = Color.white;
+            outline.outlEnabled = selected;
+            outline.RefreshOutline();
         }
     }
     private void OnMouseDown() {
         if(GameManager.gamePaused) return;
         Commander.PlanetPressed(this);
+        outline.RefreshOutline();
     }
     private void OnMouseEnter() {
         if(GameManager.gamePaused) return;
+        outline.EnableOutline();
         sprite.color = Color.white;
     }
     private void OnMouseExit() {
-        if(!Selected) sprite.color = commander.color;
+        if(!Selected) outline.DisableOutline();
+        outline.RefreshOutline();
     }
 }

@@ -15,6 +15,7 @@ public class SaveManager : MonoBehaviour
     public Save currentSave = default;
 
     public static event System.Action OnLoaded;
+    public static event System.Action<CheckMark> OnMarked;
 
     private void Awake() {
         if(instance == null){
@@ -25,17 +26,7 @@ public class SaveManager : MonoBehaviour
     }
 
     private void Start() {
-        // saves.Add(Save(currentSave, "Start"));
-        // checks.Add(Instantiate(checkMarkOb, new Vector3(-7, 3, 0), Quaternion.identity));
-        // checks[0].transform.parent = checkMarkHolder;
-        // checks[0].save = saves[0];
-        // checks[0].OnMarked += (check) => {
-        //     OnUnMark?.Invoke();
-        //     Load(check.save);
-        // };
-        // OnUnMark += checks[0].UnMark;
-        // checks[0].Mark();
-        Load(currentSave);
+
     }
 
     public float timeInDay = 15f;
@@ -46,10 +37,11 @@ public class SaveManager : MonoBehaviour
         if(GameManager.gamePaused){
             return;
         }
+        if(saves.Count == 0) NewSave();
         timePercent += Time.deltaTime / timeInDay;
         if(timePercent >= 1f){
-            NewSave();
             timePercent = 0f;
+            NewSave();
         }
     }
 
@@ -67,6 +59,7 @@ public class SaveManager : MonoBehaviour
             OnUnMark?.Invoke();
             Load(check.save);
         };
+        newcheck.OnMarked += OnMarked;
         OnUnMark += newcheck.UnMark;
         newcheck.Mark();
     }
@@ -98,10 +91,13 @@ public class SaveManager : MonoBehaviour
     }
 
     public void Load(Save save){
-        Destroy(currentSave.gameObject);
-        currentSave = Save(save, "[Loaded] : " + save.name); 
+        Save newSave = Save(save, "[Loaded] : " + save.name); 
+
         save.gameObject.SetActive(false);
-        currentSave.gameObject.SetActive(true);
+        newSave.gameObject.SetActive(true);
+        Destroy(currentSave.gameObject);
+        currentSave = newSave;
+
         OnLoaded?.Invoke();
     }
 }

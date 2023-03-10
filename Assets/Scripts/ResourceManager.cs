@@ -19,7 +19,7 @@ public class ResourceManager : MonoBehaviour {
         if(Time.time > nextGrowthTime && resources < maxResources){
             resources ++;
             OnResourceChange?.Invoke();
-            nextGrowthTime = Time.time + 1f/resourcesGrowthRate;
+            nextGrowthTime = Time.time + Random.Range(0.9f, 1.1f) / resourcesGrowthRate;
         }
     }
 

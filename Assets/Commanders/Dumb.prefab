@@ -46,6 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   save: {fileID: 0}
   ownedPlanets: []
-  color: {r: 1, g: 0, b: 0, a: 0.2901961}
+  spriteSmall: {fileID: -1164538217, guid: e41da73e2cc04824c90475ee64cff9e1, type: 3}
+  spriteMed: {fileID: 838581440, guid: e41da73e2cc04824c90475ee64cff9e1, type: 3}
+  spriteBig: {fileID: 1447018941, guid: e41da73e2cc04824c90475ee64cff9e1, type: 3}
+  spriteUnit: {fileID: 21300000, guid: 4c39064a4004ac242ab7a8b6a2b519d8, type: 3}
   attackSpeed: 2
   nextAttackTime: 0

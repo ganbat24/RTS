@@ -16,6 +16,7 @@ public class CheckMark : MonoBehaviour
         sprite.color =  Color.white;
     }
     public void Mark(){
+        AudioManager.PlayCheckMark();
         OnMarked?.Invoke(this);
         marked = true;
         sprite.color =  Color.black;

@@ -7,18 +7,35 @@ public class Commander : MonoBehaviour
     [HideInInspector] public Save save = default;
 
     public List<Planet> ownedPlanets = default;
-    public Color color = new Color(199, 155, 155, 155);
     public static event System.Action<Planet> OnPlanetPressed;
-    public event System.Action<Commander> OnCommanderAttack;
+    public event System.Action OnCommanderAttack;
+    public event System.Action OnCommanderDamaged;
     public event System.Action<Planet> OnGainedPlanet;
     public event System.Action<Planet> OnLostPlanet;
+
+    public Sprite spriteSmall = default;
+    public Sprite spriteMed = default;
+    public Sprite spriteBig = default;
+    public Sprite spriteUnit = default;
 
     private void Start() {
         save = transform.parent.GetComponent<Save>();
     }
 
-    protected void RaiseCommanderAttack(Commander commander){
-        OnCommanderAttack?.Invoke(commander);
+    public void RaiseCommanderAttack(Commander commander){
+        OnCommanderAttack?.Invoke();
+    }
+
+    public void RaiseCommanderDamaged(Commander commander){
+        OnCommanderAttack?.Invoke();
+    }
+
+    public int shipCount = 0;
+
+    public int Resources(){
+        int ans = 0;
+        ownedPlanets.ForEach((planet) => ans += planet.resourceManager.resources);
+        return ans + shipCount;
     }
 
     public void LoosePlanet(Planet planet){

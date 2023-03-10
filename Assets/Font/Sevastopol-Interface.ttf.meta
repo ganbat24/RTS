@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7f39cec5d83beeb4aab041621dbfc03a
+guid: 87254fd1ac3b59a408ab61012b59bf4a
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Minecraft
+  - Sevastopol Interface
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

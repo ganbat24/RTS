@@ -19,13 +19,13 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
-        if(Input.GetKeyDown(KeyCode.Escape)){
-            if(gamePaused) UnPauseGame();
-            else PauseGame();
-        }
+        // if(Input.GetKeyDown(KeyCode.Escape)){
+        //     if(gamePaused) UnPauseGame();
+        //     else PauseGame();
+        // }
     }
 
-    public static bool gamePaused = false;
+    public static bool gamePaused = true;
     public static void UnPauseGame(){
         gamePaused = false;
         onGameUnPause?.Invoke();
